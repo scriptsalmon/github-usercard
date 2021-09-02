@@ -1,4 +1,17 @@
 import axios from 'axios';
+
+const gitUsers = [
+  'scriptsalmon',
+  'justsml',
+  'luishrd',
+  'BigKnell',
+  'scriptsalmon',
+  'justsml',
+  'luishrd',
+  'BigKnell'
+]
+
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
@@ -6,19 +19,33 @@ import axios from 'axios';
 */
 const cards = document.querySelector('.cards');
 
-function getUser () {
-    axios.get('https://api.github.com/users/scriptsalmon')
-    .then(res => {
-      console.log(res)
+// function getUser () {
+//     axios.get('https://api.github.com/users/scriptsalmon')
+//     .then(res => {
+//       const card = cardMaker(res)
+//       cards.appendChild(card);
+//     }).catch(err => {
+//       console.log('wtf');
+//     })
+// }
+
+// getUser();
+
+const getUser = async (userName) => {
+  try {
+    const res = await axios.get(`https://api.github.com/users/${userName}`);
       const card = cardMaker(res)
       cards.appendChild(card);
-    }).catch(err => {
-      console.log('wtf');
-    })
+  } catch {
+    const errorMsg = document.createElement('p');
+    errorMsg.textContent = "you fked up!"
+    document.body.appendChild(errorMsg);
+  } finally {
+    console.log("finalllyyyy");
+  }
 }
 
-getUser();
-
+getUser('scriptsalmon');
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -31,7 +58,7 @@ getUser();
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
-// const cards = document.querySelector('.cards');
+
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
