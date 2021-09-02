@@ -4,10 +4,6 @@ const gitUsers = [
   'scriptsalmon',
   'justsml',
   'luishrd',
-  'BigKnell',
-  'scriptsalmon',
-  'justsml',
-  'luishrd',
   'BigKnell'
 ]
 
@@ -19,6 +15,8 @@ const gitUsers = [
 */
 const cards = document.querySelector('.cards');
 
+
+//SINGLE WORKS
 // function getUser () {
 //     axios.get('https://api.github.com/users/scriptsalmon')
 //     .then(res => {
@@ -31,21 +29,22 @@ const cards = document.querySelector('.cards');
 
 // getUser();
 
-const getUser = async (userName) => {
-  try {
-    const res = await axios.get(`https://api.github.com/users/${userName}`);
-      const card = cardMaker(res)
-      cards.appendChild(card);
-  } catch {
-    const errorMsg = document.createElement('p');
-    errorMsg.textContent = "you fked up!"
-    document.body.appendChild(errorMsg);
-  } finally {
-    console.log("finalllyyyy");
-  }
+
+function getUser (userName) {
+  axios.get(`https://api.github.com/users/${userName}`)
+  .then(res => {
+    const card = cardMaker(res)
+    cards.appendChild(card);
+  }).catch(err => {
+    console.log('wtf');
+  })
 }
 
-getUser('scriptsalmon');
+gitUsers.forEach(userName => {
+  getUser(userName);
+})
+
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -152,3 +151,29 @@ function cardMaker ({ data }) {
     luishrd
     bigknell
 */
+
+// BUTTON FUNCTIONALITY
+const userButton = document.querySelector('#userBtn');
+userButton.addEventListener('click', () => {
+  console.log('<3');
+  getUser('scriptsalmon');
+})
+
+
+
+
+// const getUser = async (userName) => {
+//   try {
+//     const res = await axios.get(`https://api.github.com/users/${userName}`);
+//       const card = cardMaker(res)
+//       cards.appendChild(card);
+//   } catch {
+//     const errorMsg = document.createElement('p');
+//     errorMsg.textContent = "you fked up!"
+//     document.body.appendChild(errorMsg);
+//   } finally {
+//     console.log("finalllyyyy");
+//   }
+// }
+
+// getUser('scriptsalmon');
