@@ -1,8 +1,49 @@
+import axios from 'axios';
+
+const gitUsers = [
+  'scriptsalmon',
+  'justsml',
+  'luishrd',
+  'BigKnell'
+]
+
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+const cards = document.querySelector('.cards');
+
+
+//SINGLE WORKS
+// function getUser () {
+//     axios.get('https://api.github.com/users/scriptsalmon')
+//     .then(res => {
+//       const card = cardMaker(res)
+//       cards.appendChild(card);
+//     }).catch(err => {
+//       console.log('wtf');
+//     })
+// }
+
+// getUser();
+
+
+function getUser (userName) {
+  axios.get(`https://api.github.com/users/${userName}`)
+  .then(res => {
+    const card = cardMaker(res)
+    cards.appendChild(card);
+  }).catch(err => {
+    console.log('wtf');
+  })
+}
+
+gitUsers.forEach(userName => {
+  getUser(userName);
+})
+
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -33,7 +74,59 @@ const followersArray = [];
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
+*/
+function cardMaker ({ data }) {
+  // create elements
+  const card = document.createElement('div');
+  const cardImg = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const userNameH3 = document.createElement('h3');
+  const usersUserName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const profileA = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
 
+  // classes
+  card.className = 'card';
+  cardInfo.className = 'card-info';
+  userNameH3.className = 'name';
+  usersUserName.className = 'username';
+
+  // add content
+  cardImg.src = data['avatar_url'];
+  userNameH3.textContent = `${data['name'] ? data['name'] : 'Unnamed'}`;
+  usersUserName.textContent = data['login'];
+  location.textContent = `Location: ${data['location'] ? data['location'] : 'unknown location'}`;
+  profile.textContent = 'Profile: ';
+  profileA.href = data['html_url'];
+  // profileA.setAttribute('href', data['url']);
+  profileA.textContent = `${data['url']}`;
+  console.log(profileA);
+  // followers.textContent = `Followers: ${data['followers'] ? data['followers'] === '0' : 'None!'}`;
+  // following.textContent = `Following: ${data['following'] ? data['following'] === '0' : 'Noone'}`;
+  followers.textContent = `Followers: ${data['followers']}`;
+  following.textContent = `Following: ${data['following']}`;
+  bio.textContent = `Bio: ${data['bio'] ? data['bio'] : 'No Bio'}`;
+
+  // append elements
+  card.appendChild(cardImg);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(userNameH3);
+  cardInfo.appendChild(usersUserName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  profile.appendChild(profileA);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  return card;
+}
+
+/*
     <div class="card">
       <img src={image url of user} />
       <div class="card-info">
@@ -58,3 +151,29 @@ const followersArray = [];
     luishrd
     bigknell
 */
+
+// BUTTON FUNCTIONALITY
+const userButton = document.querySelector('#userBtn');
+userButton.addEventListener('click', () => {
+  console.log('<3');
+  getUser('scriptsalmon');
+})
+
+
+
+
+// const getUser = async (userName) => {
+//   try {
+//     const res = await axios.get(`https://api.github.com/users/${userName}`);
+//       const card = cardMaker(res)
+//       cards.appendChild(card);
+//   } catch {
+//     const errorMsg = document.createElement('p');
+//     errorMsg.textContent = "you fked up!"
+//     document.body.appendChild(errorMsg);
+//   } finally {
+//     console.log("finalllyyyy");
+//   }
+// }
+
+// getUser('scriptsalmon');
