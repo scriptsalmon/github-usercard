@@ -3,6 +3,12 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+axios.get('https://api.github.com/users/scriptsalmon')
+  .then(res => {
+    console.log(res);
+  }).catch(err => {
+    error(err);
+  })
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
